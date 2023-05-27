@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>電卓</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 5px;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .input {
+      grid-column: 1 / span 4;
+      margin-bottom: 10px;
+      padding: 5px;
+      font-size: 18px;
+      text-align: right;
+    }
+
+    .button {
+      width: 100%;
+      font-size: 18px;
+      padding: 10px;
+      text-align: center;
+      background-color: #eee;
+      border: none;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #ccc;
+    }
+
+    .preview {
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" class="input" id="result" readonly>
+
+    <button class="button" onclick="clearInput()">C</button>
+    <button class="button" onclick="deleteLastCharacter()">←</button>
+    <button class="button" onclick="appendInput('/')">÷</button>
+    <button class="button" onclick="appendInput('7')">7</button>
+    <button class="button" onclick="appendInput('8')">8</button>
+    <button class="button" onclick="appendInput('9')">9</button>
+    <button class="button" onclick="appendInput('*')">×</button>
+    <button class="button" onclick="appendInput('4')">4</button>
+    <button class="button" onclick="appendInput('5')">5</button>
+    <button class="button" onclick="appendInput('6')">6</button>
+    <button class="button" onclick="appendInput('-')">-</button>
+    <button class="button" onclick="appendInput('1')">1</button>
+    <button class="button" onclick="appendInput('2')">2</button>
+    <button class="button" onclick="appendInput('3')">3</button>
+    <button class="button" onclick="appendInput('+')">+</button>
+    <button class="button" onclick="appendInput('0')">0</button>
+    <button class="button" onclick="appendInput('.')">.</button>
+    <button class="button" onclick="calculate()">=</button>
+    <button class="button" onclick="calculateSqrt()">√</button>
+  </div>
+
+  <div class="preview">
+    <h3>プレビュー</h3>
+    <p id="previewResult"></p>
+  </div>
+
+  <script>
+    function appendInput(value) {
+      var input = document.getElementById('result');
+      input.value += value;
+      updatePreview();
+    }
+
+    function clearInput() {
+      var input = document.getElementById('result');
+      input.value = '';
+      updatePreview();
+    }
+
+    function deleteLastCharacter() {
+      var input = document.getElementById('result');
+      input.value = input.value.slice(0, -1);
+      updatePreview();
+    }
+
+    function calculate() {
+      var input = document.getElementById('result');
+      try {
+        var result = eval(input.value);
+        input.value = result;
+        updatePreview(result);
+      } catch (error) {
+        input.value = 'Error';
+        updatePreview();
+      }
+    }
+
+    function calculateSqrt() {
+      var input = document.getElementById('result');
+      var inputValue = parseFloat(input.value);
+      if (!isNaN(inputValue)) {
+        var result = Math.sqrt(inputValue);
+        input.value = result;
+        updatePreview(result);
+      } else {
+        input.value = 'Error';
+        updatePreview();
+      }
+    }
+
+    function updatePreview(result) {
+      var preview = document.getElementById('previewResult');
+      if (result !== undefined) {
+        preview.textContent = '結果: ' + result;
+      } else {
+        preview.textContent = '';
+      }
+    }
+  </script>
+</body>
+</html>
